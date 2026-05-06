@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <rect width="512" height="512" rx="96" fill="#2563EB"/>
+  <g fill="none" stroke="white" stroke-width="24" stroke-linecap="round" stroke-linejoin="round">
+    <!-- top-left -->
+    <path d="M 128 216 L 128 128 L 216 128"/>
+    <!-- top-right -->
+    <path d="M 296 128 L 384 128 L 384 216"/>
+    <!-- bottom-right -->
+    <path d="M 384 296 L 384 384 L 296 384"/>
+    <!-- bottom-left -->
+    <path d="M 216 384 L 128 384 L 128 296"/>
+    <!-- horizontal scan line -->
+    <line x1="144" y1="256" x2="368" y2="256" opacity="0.85"/>
+  </g>
+</svg>
