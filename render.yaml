@@ -1,13 +1,13 @@
 # Render blueprint for CardConnect.
 # Reference: https://render.com/docs/blueprint-spec
 #
-# This deploys the Express + Vite app as a single web service with a
-# persistent disk so SQLite data.db survives deploys and restarts.
+# Deploys the Express + Vite app as a single web service with a persistent
+# disk so SQLite data.db survives deploys and restarts.
 services:
   - type: web
     name: cardconnect
     runtime: node
-    plan: free
+    plan: starter
     region: oregon
     branch: main
     # Build the client (Vite -> dist/public) and bundle the server (esbuild -> dist/index.cjs).
@@ -25,15 +25,11 @@ services:
       # DEEPSEEK_API_KEY is set in the Render dashboard, not committed to the repo.
       - key: DEEPSEEK_API_KEY
         sync: false
-    # NOTE on persistence:
-    # Render's free plan does NOT support persistent disks, so SQLite data
-    # resets on every deploy or container restart. To enable persistence,
-    # upgrade this service to the `starter` plan ($7/mo) and uncomment the
-    # disk + DATABASE_PATH env var below.
-    #
-    #   - key: DATABASE_PATH
-    #     value: /var/data/cardconnect.db
-    # disk:
-    #   name: cardconnect-data
-    #   mountPath: /var/data
-    #   sizeGB: 1
+      # Point better-sqlite3 at the mounted persistent disk so contacts and
+      # card images survive redeploys and container restarts.
+      - key: DATABASE_PATH
+        value: /var/data/cardconnect.db
+    disk:
+      name: cardconnect-data
+      mountPath: /var/data
+      sizeGB: 1
