@@ -1,5 +1,5 @@
 import { Link, useLocation } from "wouter";
-import { ScanLine, Users, ArrowLeft } from "lucide-react";
+import { ScanLine, Users, ArrowLeft, Settings } from "lucide-react";
 import { ReactNode } from "react";
 
 export function AppShell({
@@ -56,7 +56,7 @@ export function AppShell({
 
         {/* Bottom nav */}
         <nav className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-md bg-background/95 backdrop-blur border-t border-border z-30">
-          <div className="grid grid-cols-2 h-20 pb-2">
+          <div className="grid grid-cols-3 h-20 pb-2">
             <Link
               href="/"
               className="flex flex-col items-center justify-center gap-1.5 hover-elevate active-elevate-2"
@@ -76,6 +76,16 @@ export function AppShell({
                 <ScanLine className="w-5 h-5 text-white" />
               </div>
               <span className="text-xs font-semibold leading-none">Scan</span>
+            </Link>
+            <Link
+              href="/settings"
+              className="flex flex-col items-center justify-center gap-1.5 hover-elevate active-elevate-2"
+              data-testid="link-tab-settings"
+            >
+              <div className="w-9 h-9 flex items-center justify-center">
+                <Settings className="w-5 h-5" />
+              </div>
+              <span className="text-xs font-semibold leading-none">Settings</span>
             </Link>
           </div>
         </nav>

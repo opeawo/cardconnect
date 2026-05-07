@@ -1,6 +1,7 @@
 import "dotenv/config";
 import express, { Response, NextFunction } from 'express';
 import type { Request } from 'express';
+import cookieParser from "cookie-parser";
 import { registerRoutes } from "./routes";
 import { serveStatic } from "./static";
 import { createServer } from "node:http";
@@ -31,6 +32,19 @@ app.use(
 );
 
 app.use(express.urlencoded({ extended: false, limit: "1mb" }));
+
+// Signed cookies are how we identify a device session for Google OAuth.
+// COOKIE_SECRET should be set in production; we generate a fallback so dev
+// works out of the box (sessions just won't survive restarts in that case).
+const COOKIE_SECRET =
+  process.env.COOKIE_SECRET ||
+  (process.env.NODE_ENV === "production"
+    ? (() => {
+        console.warn("COOKIE_SECRET not set in production — generating ephemeral secret. Sessions will reset on restart.");
+        return Math.random().toString(36).slice(2) + Math.random().toString(36).slice(2);
+      })()
+    : "cardconnect-dev-cookie-secret");
+app.use(cookieParser(COOKIE_SECRET));
 
 export function log(message: string, source = "express") {
   const formattedTime = new Date().toLocaleTimeString("en-US", {

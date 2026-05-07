@@ -22,9 +22,28 @@ export const contacts = sqliteTable("contacts", {
   // Downscaled JPEG of the scanned card, stored as a data URL
   // (data:image/jpeg;base64,...). Used as the contact's profile picture.
   cardImage: text("card_image"),
+  // Google People API resource name (e.g. "people/c1234567890") once synced.
+  // Null/empty means "not yet pushed to Google".
+  googleResourceName: text("google_resource_name"),
   // ISO timestamp string
   createdAt: text("created_at").notNull(),
 });
+
+// One row per device session. The session ID is a random opaque token stored
+// in a signed httpOnly cookie. Storing tokens server-side means they never
+// touch the client.
+export const googleTokens = sqliteTable("google_tokens", {
+  sessionId: text("session_id").primaryKey(),
+  accessToken: text("access_token").notNull(),
+  refreshToken: text("refresh_token").notNull(),
+  // Unix epoch milliseconds when the access token expires
+  expiresAt: integer("expires_at").notNull(),
+  email: text("email"),
+  name: text("name"),
+  picture: text("picture"),
+  connectedAt: text("connected_at").notNull(),
+});
+export type GoogleToken = typeof googleTokens.$inferSelect;
 
 // Cap individual string fields so abusive callers can't push huge payloads.
 // Card images are downscaled to ~600px JPEG; 800KB of base64 is comfortably
@@ -47,6 +66,7 @@ export const insertContactSchema = createInsertSchema(contacts)
     rawOcrText: z.string().max(8000).optional().nullable(),
     draftMessage: z.string().max(2000).optional().nullable(),
     cardImage: z.string().max(800_000).optional().nullable(),
+    googleResourceName: z.string().max(200).optional().nullable(),
   });
 
 export type InsertContact = z.infer<typeof insertContactSchema>;

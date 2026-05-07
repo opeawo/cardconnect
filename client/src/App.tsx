@@ -9,6 +9,7 @@ import Home from "@/pages/home";
 import Scan from "@/pages/scan";
 import Review from "@/pages/review";
 import ContactPage from "@/pages/contact";
+import SettingsPage from "@/pages/settings";
 
 function AppRouter() {
   return (
@@ -17,6 +18,7 @@ function AppRouter() {
       <Route path="/scan" component={Scan} />
       <Route path="/review" component={Review} />
       <Route path="/contacts/:id" component={ContactPage} />
+      <Route path="/settings" component={SettingsPage} />
       <Route component={NotFound} />
     </Switch>
   );
