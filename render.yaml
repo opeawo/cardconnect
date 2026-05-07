@@ -10,8 +10,12 @@ services:
     plan: free
     region: oregon
     branch: main
-    # Build the client (Vite -> dist/public) and bundle the server (esbuild -> dist/index.cjs)
-    buildCommand: npm ci && npm run build
+    # Build the client (Vite -> dist/public) and bundle the server (esbuild -> dist/index.cjs).
+    # Use `npm install` (NOT `npm ci --omit=dev`) so devDependencies like esbuild,
+    # vite, tsx, and typescript are available during the build step. The bundle
+    # produced by esbuild is fully self-contained, so the running container does
+    # not need devDependencies at runtime.
+    buildCommand: npm install --include=dev && npm run build
     # Serve the bundled production server
     startCommand: node dist/index.cjs
     healthCheckPath: /
