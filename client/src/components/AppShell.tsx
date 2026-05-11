@@ -1,94 +1,158 @@
 import { Link, useLocation } from "wouter";
-import { ScanLine, Users, ArrowLeft, Settings } from "lucide-react";
 import { ReactNode } from "react";
+import { MaterialIcon } from "./MaterialIcon";
+import { Logo } from "./Logo";
+
+// Material 3 Navigation Bar item.
+// Active state uses a pill-shaped indicator behind the icon (per MD3 spec)
+// instead of a colored background on the whole tab \u2014 this is the visual
+// signature that says "Material" without us writing the word.
+function NavItem({
+  href,
+  icon,
+  label,
+  active,
+  testId,
+}: {
+  href: string;
+  icon: string;
+  label: string;
+  active: boolean;
+  testId: string;
+}) {
+  return (
+    <Link
+      href={href}
+      className="relative flex flex-col items-center justify-center gap-1 pt-3 pb-2 md-state-layer rounded-2xl mx-0.5"
+      data-testid={testId}
+      aria-label={label}
+    >
+      <div
+        className={
+          "relative flex items-center justify-center w-16 h-8 rounded-full transition-colors " +
+          (active ? "bg-blue/15 dark:bg-blue/25" : "bg-transparent")
+        }
+      >
+        <MaterialIcon
+          name={icon}
+          filled={active}
+          size={24}
+          weight={active ? 500 : 400}
+          className={active ? "text-blue" : "text-foreground/70"}
+        />
+      </div>
+      <span
+        className={
+          "md-label-medium leading-none " +
+          (active ? "text-foreground font-semibold" : "text-foreground/70")
+        }
+      >
+        {label}
+      </span>
+    </Link>
+  );
+}
 
 export function AppShell({
   children,
   showBack,
   title,
+  noNav = false,
+  pageBg = "md-surface",
 }: {
   children: ReactNode;
   showBack?: boolean;
   title?: string;
+  noNav?: boolean;
+  pageBg?: string;
 }) {
-  const [, setLocation] = useLocation();
+  const [location, setLocation] = useLocation();
+  const isHome = location === "/" || location === "";
+  const isScan = location.startsWith("/scan");
+  const isSettings = location.startsWith("/settings");
+
   return (
-    <div className="min-h-screen bg-background flex flex-col items-center">
-      {/* Mobile-first frame: max-w-md so it feels like an app even on desktop */}
-      <div className="w-full max-w-md flex-1 flex flex-col relative pb-24">
-        {/* Top bar */}
-        <header className="sticky top-0 z-20 bg-background/90 backdrop-blur border-b border-border px-4 h-14 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            {showBack ? (
+    <div className={`min-h-screen flex flex-col items-center ${pageBg}`}>
+      {/* Mobile-first frame */}
+      <div
+        className={`w-full max-w-md flex-1 flex flex-col relative ${
+          noNav ? "" : "pb-24"
+        }`}
+      >
+        {/* Material 3 small top app bar: 64px tall, no shadow until scrolled.
+            With back button: title is left-aligned next to the arrow.
+            Without back button on Home: show full wordmark + logo.
+            Without back button on other tabs (Scan/Settings): show wordmark only. */}
+        <header className="sticky top-0 z-20 md-surface px-2 h-16 flex items-center">
+          {showBack ? (
+            <>
               <button
-                onClick={() => window.history.length > 1 ? window.history.back() : setLocation("/")}
-                className="p-1.5 -ml-1.5 rounded-lg hover-elevate active-elevate-2"
+                onClick={() =>
+                  window.history.length > 1 ? window.history.back() : setLocation("/")
+                }
+                className="w-12 h-12 rounded-full md-state-layer flex items-center justify-center flex-shrink-0"
                 data-testid="button-back"
                 aria-label="Go back"
               >
-                <ArrowLeft className="w-5 h-5" />
+                <MaterialIcon name="arrow_back" size={24} />
               </button>
-            ) : (
-              <Link href="/" className="flex items-center gap-2" data-testid="link-home">
-                <div className="w-7 h-7 rounded-lg bg-blue flex items-center justify-center">
-                  <ScanLine className="w-4 h-4 text-white" />
-                </div>
-                <span
-                  className="font-display text-xl uppercase tracking-wide"
-                  style={{ fontFamily: "'Bebas Neue', sans-serif" }}
-                >
-                  CardConnect
+              {title && (
+                <span className="md-title-large text-foreground ml-2 truncate">
+                  {title}
                 </span>
-              </Link>
-            )}
-          </div>
-          {title && (
-            <span
-              className="font-display text-base uppercase tracking-wider text-muted-foreground"
-              style={{ fontFamily: "'Bebas Neue', sans-serif" }}
+              )}
+            </>
+          ) : (
+            <Link
+              href="/"
+              className="flex items-center gap-2 pl-2 pr-3 h-12 rounded-full md-state-layer"
+              data-testid="link-home"
             >
-              {title}
-            </span>
+              <Logo size={28} />
+              <span
+                className="md-title-large font-medium"
+                style={{ fontFamily: "'Roboto Flex', Roboto, sans-serif", letterSpacing: "0.005em" }}
+              >
+                CardConnect
+              </span>
+            </Link>
           )}
         </header>
 
         <main className="flex-1 flex flex-col">{children}</main>
 
-        {/* Bottom nav */}
-        <nav className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-md bg-background/95 backdrop-blur border-t border-border z-30">
-          <div className="grid grid-cols-3 h-20 pb-2">
-            <Link
-              href="/"
-              className="flex flex-col items-center justify-center gap-1.5 hover-elevate active-elevate-2"
-              data-testid="link-tab-contacts"
-            >
-              <div className="w-9 h-9 flex items-center justify-center">
-                <Users className="w-5 h-5" />
-              </div>
-              <span className="text-xs font-semibold leading-none">Contacts</span>
-            </Link>
-            <Link
-              href="/scan"
-              className="flex flex-col items-center justify-center gap-1.5 hover-elevate active-elevate-2"
-              data-testid="link-tab-scan"
-            >
-              <div className="w-9 h-9 rounded-full bg-blue flex items-center justify-center">
-                <ScanLine className="w-5 h-5 text-white" />
-              </div>
-              <span className="text-xs font-semibold leading-none">Scan</span>
-            </Link>
-            <Link
-              href="/settings"
-              className="flex flex-col items-center justify-center gap-1.5 hover-elevate active-elevate-2"
-              data-testid="link-tab-settings"
-            >
-              <div className="w-9 h-9 flex items-center justify-center">
-                <Settings className="w-5 h-5" />
-              </div>
-              <span className="text-xs font-semibold leading-none">Settings</span>
-            </Link>
-          </div>
-        </nav>
+        {/* Material 3 Navigation Bar (80px tall, three destinations) */}
+        {!noNav && (
+          <nav
+            className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-md md-surface-container z-30 border-t border-[hsl(var(--md-outline-variant))]"
+            role="navigation"
+            aria-label="Primary"
+          >
+            <div className="grid grid-cols-3 h-20 pb-1 px-1">
+              <NavItem
+                href="/"
+                icon="contacts"
+                label="Contacts"
+                active={isHome || location.startsWith("/contacts")}
+                testId="link-tab-contacts"
+              />
+              <NavItem
+                href="/scan"
+                icon="document_scanner"
+                label="Scan"
+                active={isScan}
+                testId="link-tab-scan"
+              />
+              <NavItem
+                href="/settings"
+                icon="settings"
+                label="Settings"
+                active={isSettings}
+                testId="link-tab-settings"
+              />
+            </div>
+          </nav>
+        )}
       </div>
     </div>
   );

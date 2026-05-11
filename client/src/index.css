@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Roboto+Flex:opsz,wght@8..144,400;8..144,500;8..144,600;8..144,700&display=swap');
+@import url('https://fonts.googleapis.com/icon?family=Material+Symbols+Rounded');
 
 @tailwind base;
 @tailwind components;
@@ -29,38 +30,57 @@
   --popover: 0 0% 95%;
   --popover-foreground: 0 0% 9%;
   --popover-border: 0 0% 91%;
-  --primary: 221 83% 53%;
-  --primary-foreground: 0 0% 98%;
-  --secondary: 0 0% 92%;
+  --primary: 217 89% 51%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 220 14% 92%;
   --secondary-foreground: 0 0% 9%;
-  --muted: 0 0% 93%;
-  --muted-foreground: 0 0% 40%;
-  --accent: 220 14% 92%;
-  --accent-foreground: 0 0% 9%;
-  --destructive: 0 84% 42%;
-  --destructive-foreground: 0 0% 98%;
-  --input: 0 0% 75%;
-  --ring: 221 83% 53%;
-  --chart-1: 221 83% 45%;
-  --chart-2: 262 83% 48%;
-  --chart-3: 173 58% 39%;
-  --chart-4: 43 74% 49%;
-  --chart-5: 27 87% 55%;
-  --font-sans: Figtree, system-ui, -apple-system, sans-serif;
+  --muted: 220 14% 94%;
+  --muted-foreground: 220 9% 38%;
+  --accent: 217 91% 95%;
+  --accent-foreground: 217 89% 30%;
+  --destructive: 4 80% 47%;
+  --destructive-foreground: 0 0% 100%;
+  --input: 220 13% 85%;
+  --ring: 217 89% 51%;
+  --chart-1: 217 89% 51%;
+  --chart-2: 142 71% 45%;
+  --chart-3: 36 100% 50%;
+  --chart-4: 4 80% 58%;
+  --chart-5: 271 91% 65%;
+  --font-sans: 'Roboto Flex', Roboto, system-ui, -apple-system, sans-serif;
   --font-display: 'Bebas Neue', sans-serif;
   --font-serif: Georgia, serif;
-  --blue: 220 90% 56%;
-  --blue-light: 220 100% 97%;
-  --font-mono: Menlo, monospace;
-  --radius: 0.5rem;
-  --shadow-2xs: 0px 2px 0px 0px hsl(0 0% 0% / 0);
-  --shadow-xs: 0px 2px 0px 0px hsl(0 0% 0% / 0);
-  --shadow-sm: 0px 2px 0px 0px hsl(0 0% 0% / 0), 0px 1px 2px -1px hsl(0 0% 0% / 0);
-  --shadow: 0px 2px 0px 0px hsl(0 0% 0% / 0), 0px 1px 2px -1px hsl(0 0% 0% / 0);
-  --shadow-md: 0px 2px 0px 0px hsl(0 0% 0% / 0), 0px 2px 4px -1px hsl(0 0% 0% / 0);
-  --shadow-lg: 0px 2px 0px 0px hsl(0 0% 0% / 0), 0px 4px 6px -1px hsl(0 0% 0% / 0);
-  --shadow-xl: 0px 2px 0px 0px hsl(0 0% 0% / 0), 0px 8px 10px -1px hsl(0 0% 0% / 0);
-  --shadow-2xl: 0px 2px 0px 0px hsl(0 0% 0% / 0);
+  /* Google Blue (Material 3 Primary 40) */
+  --blue: 217 89% 51%;
+  --blue-light: 217 91% 95%;
+  /* Material 3 semantic tokens (key surfaces & state layers) */
+  --md-surface: 0 0% 100%;
+  --md-surface-container-lowest: 0 0% 100%;
+  --md-surface-container-low: 220 17% 98%;
+  --md-surface-container: 220 17% 96%;
+  --md-surface-container-high: 220 17% 93%;
+  --md-surface-container-highest: 220 17% 90%;
+  --md-on-surface: 220 6% 10%;
+  --md-on-surface-variant: 220 6% 36%;
+  --md-outline: 220 6% 74%;
+  --md-outline-variant: 220 6% 88%;
+  /* Google's secondary brand colours — used for accents in playful spots */
+  --google-red: 4 80% 58%;
+  --google-yellow: 45 100% 51%;
+  --google-green: 142 71% 45%;
+  --font-mono: 'Roboto Mono', Menlo, monospace;
+  /* MD3 favours larger corners */
+  --radius: 0.75rem;
+  --radius-xl: 1.75rem;
+  /* Material 3 elevation: two-layer shadow with subtle umbra + sharper key light */
+  --shadow-2xs: 0px 1px 2px 0px hsl(220 6% 10% / 0.06);
+  --shadow-xs: 0px 1px 2px 0px hsl(220 6% 10% / 0.08);
+  --shadow-sm: 0px 1px 2px 0px hsl(220 6% 10% / 0.08), 0px 1px 3px 1px hsl(220 6% 10% / 0.06);
+  --shadow: 0px 1px 3px 0px hsl(220 6% 10% / 0.10), 0px 4px 8px 3px hsl(220 6% 10% / 0.05);
+  --shadow-md: 0px 2px 6px 2px hsl(220 6% 10% / 0.08), 0px 1px 2px 0px hsl(220 6% 10% / 0.12);
+  --shadow-lg: 0px 4px 8px 3px hsl(220 6% 10% / 0.10), 0px 1px 3px 0px hsl(220 6% 10% / 0.14);
+  --shadow-xl: 0px 6px 10px 4px hsl(220 6% 10% / 0.12), 0px 2px 3px 0px hsl(220 6% 10% / 0.16);
+  --shadow-2xl: 0px 8px 12px 6px hsl(220 6% 10% / 0.14), 0px 4px 4px 0px hsl(220 6% 10% / 0.18);
   --tracking-normal: 0em;
   --spacing: 0.25rem;
 
@@ -113,35 +133,47 @@
   --opaque-button-border-intensity: 9;
   --elevate-1: rgba(255, 255, 255, 0.04);
   --elevate-2: rgba(255, 255, 255, 0.09);
-  --background: 0 0% 7%;
-  --foreground: 0 0% 98%;
-  --border: 0 0% 16%;
-  --card: 0 0% 9%;
-  --card-foreground: 0 0% 98%;
-  --card-border: 0 0% 13%;
-  --sidebar: 0 0% 11%;
-  --sidebar-foreground: 0 0% 98%;
-  --sidebar-border: 0 0% 15%;
-  --sidebar-primary: 221 83% 53%;
-  --sidebar-primary-foreground: 0 0% 98%;
-  --sidebar-accent: 0 0% 16%;
-  --sidebar-accent-foreground: 0 0% 98%;
-  --sidebar-ring: 221 83% 53%;
-  --popover: 0 0% 13%;
-  --popover-foreground: 0 0% 98%;
-  --popover-border: 0 0% 17%;
-  --primary: 221 83% 53%;
-  --primary-foreground: 0 0% 98%;
-  --secondary: 0 0% 18%;
-  --secondary-foreground: 0 0% 98%;
-  --muted: 0 0% 19%;
-  --muted-foreground: 0 0% 65%;
-  --accent: 220 9% 17%;
-  --accent-foreground: 0 0% 98%;
-  --destructive: 0 84% 42%;
-  --destructive-foreground: 0 0% 98%;
-  --input: 0 0% 30%;
-  --ring: 221 83% 53%;
+  --background: 220 13% 8%;
+  --foreground: 220 13% 95%;
+  --border: 220 6% 20%;
+  --card: 220 13% 10%;
+  --card-foreground: 220 13% 95%;
+  --card-border: 220 6% 18%;
+  --sidebar: 220 13% 11%;
+  --sidebar-foreground: 220 13% 95%;
+  --sidebar-border: 220 6% 18%;
+  --sidebar-primary: 217 91% 70%;
+  --sidebar-primary-foreground: 220 13% 8%;
+  --sidebar-accent: 220 13% 18%;
+  --sidebar-accent-foreground: 220 13% 95%;
+  --sidebar-ring: 217 91% 70%;
+  --popover: 220 13% 13%;
+  --popover-foreground: 220 13% 95%;
+  --popover-border: 220 6% 20%;
+  --primary: 217 91% 70%;
+  --primary-foreground: 220 13% 8%;
+  --secondary: 220 13% 18%;
+  --secondary-foreground: 220 13% 95%;
+  --muted: 220 13% 16%;
+  --muted-foreground: 220 6% 70%;
+  --accent: 217 30% 22%;
+  --accent-foreground: 217 91% 85%;
+  --destructive: 4 80% 70%;
+  --destructive-foreground: 220 13% 8%;
+  --input: 220 6% 28%;
+  --ring: 217 91% 70%;
+  --blue: 217 91% 70%;
+  --blue-light: 217 30% 22%;
+  --md-surface: 220 13% 8%;
+  --md-surface-container-lowest: 220 13% 6%;
+  --md-surface-container-low: 220 13% 10%;
+  --md-surface-container: 220 13% 12%;
+  --md-surface-container-high: 220 13% 15%;
+  --md-surface-container-highest: 220 13% 18%;
+  --md-on-surface: 220 13% 95%;
+  --md-on-surface-variant: 220 6% 70%;
+  --md-outline: 220 6% 36%;
+  --md-outline-variant: 220 6% 22%;
   --chart-1: 221 83% 65%;
   --chart-2: 262 83% 68%;
   --chart-3: 173 58% 55%;
@@ -206,6 +238,7 @@
 
   body {
     @apply font-sans antialiased bg-background text-foreground;
+    font-variation-settings: 'opsz' 14;
   }
   .font-display {
     font-family: var(--font-display);
@@ -215,6 +248,79 @@
   .bg-blue { background-color: hsl(var(--blue)); }
   .border-blue { border-color: hsl(var(--blue)); }
   .hover\:bg-blue\/90:hover { background-color: hsl(var(--blue) / 0.9); }
+
+  /* ---- Material Design 3 type ramp ---- */
+  .md-display-large { font-size: 3.5rem; line-height: 4rem; letter-spacing: -0.015em; font-weight: 400; }
+  .md-display-medium { font-size: 2.8125rem; line-height: 3.25rem; letter-spacing: 0; font-weight: 400; }
+  .md-display-small { font-size: 2.25rem; line-height: 2.75rem; letter-spacing: 0; font-weight: 400; }
+  .md-headline-large { font-size: 2rem; line-height: 2.5rem; letter-spacing: 0; font-weight: 500; }
+  .md-headline-medium { font-size: 1.75rem; line-height: 2.25rem; letter-spacing: 0; font-weight: 500; }
+  .md-headline-small { font-size: 1.5rem; line-height: 2rem; letter-spacing: 0; font-weight: 500; }
+  .md-title-large { font-size: 1.375rem; line-height: 1.75rem; letter-spacing: 0; font-weight: 500; }
+  .md-title-medium { font-size: 1rem; line-height: 1.5rem; letter-spacing: 0.009em; font-weight: 500; }
+  .md-title-small { font-size: 0.875rem; line-height: 1.25rem; letter-spacing: 0.007em; font-weight: 500; }
+  .md-body-large { font-size: 1rem; line-height: 1.5rem; letter-spacing: 0.031em; font-weight: 400; }
+  .md-body-medium { font-size: 0.875rem; line-height: 1.25rem; letter-spacing: 0.018em; font-weight: 400; }
+  .md-body-small { font-size: 0.75rem; line-height: 1rem; letter-spacing: 0.025em; font-weight: 400; }
+  .md-label-large { font-size: 0.875rem; line-height: 1.25rem; letter-spacing: 0.007em; font-weight: 500; }
+  .md-label-medium { font-size: 0.75rem; line-height: 1rem; letter-spacing: 0.04em; font-weight: 500; }
+  .md-label-small { font-size: 0.6875rem; line-height: 1rem; letter-spacing: 0.04em; font-weight: 500; }
+
+  /* ---- MD3 surface containers ---- */
+  .md-surface { background-color: hsl(var(--md-surface)); color: hsl(var(--md-on-surface)); }
+  .md-surface-low { background-color: hsl(var(--md-surface-container-low)); color: hsl(var(--md-on-surface)); }
+  .md-surface-container { background-color: hsl(var(--md-surface-container)); color: hsl(var(--md-on-surface)); }
+  .md-surface-high { background-color: hsl(var(--md-surface-container-high)); color: hsl(var(--md-on-surface)); }
+  .md-surface-highest { background-color: hsl(var(--md-surface-container-highest)); color: hsl(var(--md-on-surface)); }
+
+  /* ---- MD3 elevation (1–5) ---- */
+  .md-elevation-1 { box-shadow: 0px 1px 2px 0px hsl(220 6% 10% / 0.30), 0px 1px 3px 1px hsl(220 6% 10% / 0.15); }
+  .md-elevation-2 { box-shadow: 0px 1px 2px 0px hsl(220 6% 10% / 0.30), 0px 2px 6px 2px hsl(220 6% 10% / 0.15); }
+  .md-elevation-3 { box-shadow: 0px 1px 3px 0px hsl(220 6% 10% / 0.30), 0px 4px 8px 3px hsl(220 6% 10% / 0.15); }
+  .md-elevation-4 { box-shadow: 0px 2px 3px 0px hsl(220 6% 10% / 0.30), 0px 6px 10px 4px hsl(220 6% 10% / 0.15); }
+  .md-elevation-5 { box-shadow: 0px 4px 4px 0px hsl(220 6% 10% / 0.30), 0px 8px 12px 6px hsl(220 6% 10% / 0.15); }
+
+  /* ---- Material state layer (used on icon buttons, list items, fab) ---- */
+  .md-state-layer { position: relative; }
+  .md-state-layer::after {
+    content: '';
+    position: absolute; inset: 0; border-radius: inherit;
+    background-color: currentColor;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 120ms ease-out;
+  }
+  .md-state-layer:hover::after { opacity: 0.08; }
+  .md-state-layer:active::after { opacity: 0.12; }
+  .md-state-layer:focus-visible::after { opacity: 0.10; }
+
+  /* Material ripple-ish click animation on FAB */
+  @keyframes md-fab-press {
+    0% { transform: scale(1); }
+    50% { transform: scale(0.94); }
+    100% { transform: scale(1); }
+  }
+  .md-fab-press:active { animation: md-fab-press 200ms ease-out; }
+
+  /* Material Symbols Rounded — fill axis lets us animate between outline/fill */
+  .material-symbols-rounded {
+    font-family: 'Material Symbols Rounded';
+    font-weight: normal; font-style: normal;
+    line-height: 1; letter-spacing: normal; text-transform: none;
+    display: inline-block; white-space: nowrap; word-wrap: normal;
+    direction: ltr;
+    -webkit-font-feature-settings: 'liga';
+    font-feature-settings: 'liga';
+    -webkit-font-smoothing: antialiased;
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  }
+  .material-symbols-rounded.filled { font-variation-settings: 'FILL' 1, 'wght' 500, 'GRAD' 0, 'opsz' 24; }
+
+  /* Google brand wordmark style for the dot in the logo */
+  .g-red { color: hsl(var(--google-red)); }
+  .g-yellow { color: hsl(var(--google-yellow)); }
+  .g-green { color: hsl(var(--google-green)); }
+  .g-blue { color: hsl(var(--blue)); }
 }
 
 /**

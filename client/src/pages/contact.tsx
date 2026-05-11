@@ -2,24 +2,11 @@ import { useQuery, useMutation } from "@tanstack/react-query";
 import { useRoute, useLocation } from "wouter";
 import { useEffect, useState } from "react";
 import { AppShell } from "@/components/AppShell";
-import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import { MaterialIcon } from "@/components/MaterialIcon";
 import { apiRequest, queryClient } from "@/lib/queryClient";
 import type { Contact } from "@shared/schema";
 import { downloadVCard, googleContactsUrl, linkedinSearchUrl } from "@/lib/vcard";
-import {
-  Linkedin,
-  Mail,
-  Phone,
-  Globe,
-  Loader2,
-  Trash2,
-  Copy,
-  Check,
-  Sparkles,
-  Download,
-  ExternalLink,
-} from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 export default function ContactPage() {
@@ -68,7 +55,6 @@ export default function ContactPage() {
       });
       const j = await r.json();
       setDraft(j.message || "");
-      // persist
       await apiRequest("PATCH", `/api/contacts/${id}`, { draftMessage: j.message });
       queryClient.invalidateQueries({ queryKey: ["/api/contacts", id] });
     } catch {
@@ -99,7 +85,7 @@ export default function ContactPage() {
     return (
       <AppShell showBack>
         <div className="flex-1 flex items-center justify-center p-8">
-          <Loader2 className="w-6 h-6 animate-spin text-blue" />
+          <MaterialIcon name="progress_activity" size={32} className="animate-spin text-[hsl(var(--primary))]" />
         </div>
       </AppShell>
     );
@@ -118,7 +104,7 @@ export default function ContactPage() {
     <AppShell showBack title="Contact">
       {contact.cardImage && (
         <section className="px-4 pt-4">
-          <div className="aspect-[1.6/1] rounded-2xl overflow-hidden border border-border bg-muted shadow-sm">
+          <div className="aspect-[1.6/1] rounded-3xl overflow-hidden bg-[hsl(var(--md-surface-container))] md-elevation-1">
             <img
               src={contact.cardImage}
               alt={`${contact.name}'s business card`}
@@ -128,69 +114,89 @@ export default function ContactPage() {
           </div>
         </section>
       )}
+
       <section className="px-4 pt-6 pb-3">
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-4">
           {!contact.cardImage && (
-            <div className="w-14 h-14 rounded-full bg-blue/10 flex items-center justify-center flex-shrink-0">
-              <span className="font-bold text-blue text-base">{initials}</span>
+            <div className="w-16 h-16 rounded-full bg-[hsl(var(--accent))] flex items-center justify-center flex-shrink-0">
+              <span className="md-title-large text-[hsl(var(--primary))]">{initials}</span>
             </div>
           )}
           <div className="min-w-0">
             <h1
-              className="font-display uppercase text-2xl leading-none truncate"
-              style={{ fontFamily: "'Bebas Neue', sans-serif" }}
+              className="md-headline-medium text-[hsl(var(--md-on-surface))] truncate"
               data-testid="text-contact-name"
             >
               {contact.name}
             </h1>
-            <p className="text-sm text-muted-foreground mt-1 truncate">
+            <p className="md-body-medium text-[hsl(var(--md-on-surface-variant))] mt-0.5 truncate">
               {[contact.title, contact.company].filter(Boolean).join(" · ") || "—"}
             </p>
+            {contact.googleResourceName && (
+              <div className="mt-2 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[hsl(var(--google-green)/0.12)]">
+                <MaterialIcon name="cloud_done" size={14} className="text-[hsl(var(--google-green))]" />
+                <span className="md-label-small text-[hsl(var(--google-green))]">Synced to Google</span>
+              </div>
+            )}
           </div>
         </div>
       </section>
 
       {/* Quick details */}
-      <section className="px-4 space-y-1.5">
-        {contact.email && (
-          <DetailRow icon={<Mail className="w-4 h-4" />} label="Email" value={contact.email} href={`mailto:${contact.email}`} />
-        )}
-        {contact.phone && (
-          <DetailRow icon={<Phone className="w-4 h-4" />} label="Phone" value={contact.phone} href={`tel:${contact.phone}`} />
-        )}
-        {contact.website && (
-          <DetailRow
-            icon={<Globe className="w-4 h-4" />}
-            label="Website"
-            value={contact.website}
-            href={contact.website.startsWith("http") ? contact.website : `https://${contact.website}`}
-          />
-        )}
-        {contact.metContext && (
-          <DetailRow icon={<Sparkles className="w-4 h-4" />} label="Met at" value={contact.metContext} />
-        )}
+      <section className="px-4 mt-4">
+        <div className="rounded-3xl bg-[hsl(var(--md-surface-container-low))] overflow-hidden">
+          {contact.email && (
+            <DetailRow
+              icon="mail"
+              label="Email"
+              value={contact.email}
+              href={`mailto:${contact.email}`}
+              divider
+            />
+          )}
+          {contact.phone && (
+            <DetailRow
+              icon="call"
+              label="Phone"
+              value={contact.phone}
+              href={`tel:${contact.phone}`}
+              divider
+            />
+          )}
+          {contact.website && (
+            <DetailRow
+              icon="language"
+              label="Website"
+              value={contact.website}
+              href={contact.website.startsWith("http") ? contact.website : `https://${contact.website}`}
+              divider
+            />
+          )}
+          {contact.metContext && (
+            <DetailRow icon="bookmark" label="Met at" value={contact.metContext} />
+          )}
+        </div>
       </section>
 
       {/* LinkedIn message panel */}
       <section className="px-4 mt-6">
-        <div className="rounded-2xl bg-blue/5 border-2 border-blue/20 p-4">
+        <div className="rounded-3xl bg-[hsl(var(--accent))] p-5">
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-2">
-              <Linkedin className="w-4 h-4 text-blue" />
-              <span
-                className="font-display uppercase text-base tracking-wide"
-                style={{ fontFamily: "'Bebas Neue', sans-serif" }}
-              >
-                LinkedIn note
-              </span>
+              <MaterialIcon name="forum" size={20} className="text-[hsl(var(--primary))]" filled />
+              <span className="md-title-small text-[hsl(var(--md-on-surface))]">LinkedIn note</span>
             </div>
             <button
               onClick={regenerate}
               disabled={redrafting}
-              className="text-xs font-semibold text-blue flex items-center gap-1 hover:underline disabled:opacity-50"
+              className="md-label-medium text-[hsl(var(--primary))] flex items-center gap-1 px-3 py-1.5 rounded-full md-state-layer disabled:opacity-50"
               data-testid="button-regenerate-message"
             >
-              {redrafting ? <Loader2 className="w-3 h-3 animate-spin" /> : <Sparkles className="w-3 h-3" />}
+              {redrafting ? (
+                <MaterialIcon name="progress_activity" size={16} className="animate-spin" />
+              ) : (
+                <MaterialIcon name="auto_awesome" size={16} />
+              )}
               Regenerate
             </button>
           </div>
@@ -199,36 +205,26 @@ export default function ContactPage() {
             onChange={(e) => setDraft(e.target.value)}
             onBlur={saveDraft}
             rows={4}
-            className="bg-background"
+            className="bg-[hsl(var(--background))] rounded-2xl border-0 px-4 py-3 text-[15px] focus-visible:ring-2 focus-visible:ring-[hsl(var(--primary))]"
             data-testid="textarea-draft-message"
           />
-          <p className="text-[11px] text-muted-foreground mt-1.5">
-            Tap Connect on LinkedIn → “Add a note” → paste this message.
+          <p className="md-body-small text-[hsl(var(--md-on-surface-variant))] mt-2">
+            Tap Connect on LinkedIn → "Add a note" → paste this message.
           </p>
-          <div className="grid grid-cols-2 gap-2 mt-3">
-            <Button
+          <div className="grid grid-cols-2 gap-2 mt-4">
+            <button
               onClick={copyDraft}
-              variant="outline"
-              className="h-11 rounded-xl font-semibold"
+              className="h-12 rounded-full md-label-large bg-transparent text-[hsl(var(--md-on-surface))] border border-[hsl(var(--md-outline))] md-state-layer flex items-center justify-center gap-2"
               data-testid="button-copy-message"
             >
-              {copied ? (
-                <>
-                  <Check className="w-4 h-4 mr-2" />
-                  Copied
-                </>
-              ) : (
-                <>
-                  <Copy className="w-4 h-4 mr-2" />
-                  Copy note
-                </>
-              )}
-            </Button>
+              <MaterialIcon name={copied ? "check" : "content_copy"} size={18} filled={copied} />
+              {copied ? "Copied" : "Copy note"}
+            </button>
             <a href={linkedinUrl} target="_blank" rel="noopener noreferrer" data-testid="link-linkedin">
-              <Button className="w-full bg-blue hover:bg-blue/90 text-white h-11 rounded-xl font-semibold">
-                <Linkedin className="w-4 h-4 mr-2" />
+              <button className="w-full h-12 rounded-full bg-[hsl(var(--primary))] text-[hsl(var(--primary-foreground))] md-label-large md-state-layer md-elevation-1 flex items-center justify-center gap-2">
+                <MaterialIcon name="open_in_new" size={18} />
                 {contact.linkedinUrl ? "Open profile" : "Find on LinkedIn"}
-              </Button>
+              </button>
             </a>
           </div>
         </div>
@@ -236,28 +232,47 @@ export default function ContactPage() {
 
       {/* Export */}
       <section className="px-4 mt-6">
-        <h2 className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-2">
+        <h2 className="md-title-small text-[hsl(var(--md-on-surface-variant))] mb-3 px-1">
           Save to your contacts
         </h2>
-        <div className="grid grid-cols-1 gap-2">
-          <Button
-            variant="outline"
+        <div className="rounded-3xl bg-[hsl(var(--md-surface-container-low))] overflow-hidden">
+          <button
             onClick={() => downloadVCard(contact)}
-            className="h-11 rounded-xl font-semibold justify-start"
+            className="w-full flex items-center gap-4 px-5 py-4 md-state-layer text-left border-b border-[hsl(var(--md-outline-variant))]"
             data-testid="button-export-vcard"
           >
-            <Download className="w-4 h-4 mr-2" />
-            Download .vcf (iPhone & Android Contacts)
-          </Button>
-          <a href={googleContactsUrl(contact)} target="_blank" rel="noopener noreferrer">
-            <Button
-              variant="outline"
-              className="w-full h-11 rounded-xl font-semibold justify-start"
-              data-testid="button-export-google"
-            >
-              <ExternalLink className="w-4 h-4 mr-2" />
-              Add to Google Contacts
-            </Button>
+            <div className="w-10 h-10 rounded-full bg-[hsl(var(--accent))] flex items-center justify-center flex-shrink-0">
+              <MaterialIcon name="download" size={20} className="text-[hsl(var(--primary))]" />
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="md-body-large text-[hsl(var(--md-on-surface))] font-medium">
+                Download .vcf
+              </p>
+              <p className="md-body-small text-[hsl(var(--md-on-surface-variant))]">
+                iPhone & Android Contacts
+              </p>
+            </div>
+            <MaterialIcon name="chevron_right" size={20} className="text-[hsl(var(--md-on-surface-variant))]" />
+          </button>
+          <a
+            href={googleContactsUrl(contact)}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="w-full flex items-center gap-4 px-5 py-4 md-state-layer"
+            data-testid="button-export-google"
+          >
+            <div className="w-10 h-10 rounded-full bg-[hsl(var(--google-yellow)/0.18)] flex items-center justify-center flex-shrink-0">
+              <MaterialIcon name="contacts" size={20} className="text-[hsl(var(--google-green))]" filled />
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="md-body-large text-[hsl(var(--md-on-surface))] font-medium">
+                Add to Google Contacts
+              </p>
+              <p className="md-body-small text-[hsl(var(--md-on-surface-variant))]">
+                Opens contacts.google.com
+              </p>
+            </div>
+            <MaterialIcon name="open_in_new" size={18} className="text-[hsl(var(--md-on-surface-variant))]" />
           </a>
         </div>
       </section>
@@ -265,25 +280,27 @@ export default function ContactPage() {
       {/* Notes */}
       {contact.notes && (
         <section className="px-4 mt-6">
-          <h2 className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-2">
+          <h2 className="md-title-small text-[hsl(var(--md-on-surface-variant))] mb-3 px-1">
             Your notes
           </h2>
-          <p className="text-sm text-foreground/80 leading-relaxed bg-card border border-border rounded-xl p-3">
-            {contact.notes}
-          </p>
+          <div className="rounded-3xl bg-[hsl(var(--md-surface-container-low))] p-5">
+            <p className="md-body-medium text-[hsl(var(--md-on-surface))] leading-relaxed">
+              {contact.notes}
+            </p>
+          </div>
         </section>
       )}
 
       {/* Delete */}
-      <section className="px-4 mt-8">
+      <section className="px-4 mt-8 pb-32">
         <button
           onClick={() => {
             if (confirm("Delete this contact?")) deleteMut.mutate();
           }}
-          className="w-full h-11 rounded-xl border border-destructive/30 text-destructive font-semibold flex items-center justify-center gap-2 hover-elevate active-elevate-2"
+          className="w-full h-12 rounded-full border border-[hsl(var(--destructive)/0.4)] text-[hsl(var(--destructive))] md-label-large md-state-layer flex items-center justify-center gap-2"
           data-testid="button-delete-contact"
         >
-          <Trash2 className="w-4 h-4" />
+          <MaterialIcon name="delete" size={18} />
           Delete contact
         </button>
       </section>
@@ -296,23 +313,30 @@ function DetailRow({
   label,
   value,
   href,
+  divider,
 }: {
-  icon: React.ReactNode;
+  icon: string;
   label: string;
   value: string;
   href?: string;
+  divider?: boolean;
 }) {
   const inner = (
-    <div className="flex items-center gap-3 p-3 rounded-xl border border-border bg-card hover-elevate">
-      <div className="w-8 h-8 rounded-lg bg-blue/10 flex items-center justify-center text-blue flex-shrink-0">
-        {icon}
+    <div
+      className={`flex items-center gap-4 px-5 py-4 md-state-layer ${
+        divider ? "border-b border-[hsl(var(--md-outline-variant))]" : ""
+      }`}
+    >
+      <div className="w-10 h-10 rounded-full bg-[hsl(var(--accent))] flex items-center justify-center flex-shrink-0">
+        <MaterialIcon name={icon} size={20} className="text-[hsl(var(--primary))]" />
       </div>
       <div className="flex-1 min-w-0">
-        <p className="text-[11px] font-semibold uppercase tracking-widest text-muted-foreground">
-          {label}
-        </p>
-        <p className="text-sm font-medium truncate">{value}</p>
+        <p className="md-label-small text-[hsl(var(--md-on-surface-variant))]">{label}</p>
+        <p className="md-body-large text-[hsl(var(--md-on-surface))] truncate font-medium">{value}</p>
       </div>
+      {href && (
+        <MaterialIcon name="arrow_outward" size={18} className="text-[hsl(var(--md-on-surface-variant))]" />
+      )}
     </div>
   );
   if (href) {
